@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Gantt extends PApplet
 {
-	ArrayList<Task> tasks = new ArrayList<Task>();
-	private float leftSide;
-	private float margin;
+	public ArrayList<Task> tasks = new ArrayList<Task>();
+	private float leftSide = 65;
+	private float gap = 30;
 
 	public void settings()
 	{
@@ -45,29 +45,38 @@ public class Gantt extends PApplet
 	}
 
 	public void displayTasks(){
-		int days = 30;
+		int monthdays = 30;
         float x, y;
+        float newcolour;
         background(0);
         colorMode(HSB);
         stroke(255);
-        textAlign(CENTER, CENTER);
+        textAlign(CENTER);
+        fill(255);
 
-        for(int i = 1 ; i <= days ; i ++)
+        for(int i = 1; i <= monthdays ; i++)
         {
-            x = map(i, 1, 30, leftSide, width - margin);
-            line(x, margin, x, height - margin);
-            text(i, x, margin * 0.5f);
+            x = map(i, 0, monthdays, leftSide, width - leftSide);
+            text(i, x, gap);
+            line(x, gap*2, x, height - leftSide);
         }
 
-        for(int i=0; i<tasks.size();i++){
+        for(int i=0;i<tasks.size(); i++)
+		{
 			fill(255);
-        	Task horiheader = tasks.get(i);
-			y = map(tasks.get(i).start, 0, 25, border, height - border);
-			text(horiheader.getTask(), border / 2, y);
+			y = map(i,0,tasks.size(), 2*gap, height - gap);
+			text(tasks.get(i).getTask(), gap, y);
 
-			rect(60, 50, 20, 45);
+			noStroke();
+			newcolour = map(i,0,tasks.size(),0,255);
+			fill(newcolour,255,255);
+
+			float Begin = map(tasks.get(i).getStart(), 1, monthdays, 90, width - leftSide);
+			float End = map(tasks.get(i).getEnd(), i, monthdays, 95, width - leftSide);
+			rect(Begin, y + 10, End - Begin, 20, 10);
 
 		}
+
     }
 
 	public void setup(){
