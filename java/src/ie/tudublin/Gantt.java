@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Gantt extends PApplet
 {
 	ArrayList<Task> tasks = new ArrayList<Task>();
+	private float leftSide;
+	private float margin;
 
 	public void settings()
 	{
@@ -43,32 +45,37 @@ public class Gantt extends PApplet
 	}
 
 	public void displayTasks(){
-        float border = width * 0.05f;
-        float x;
-        float y;
+		int days = 30;
+        float x, y;
         background(0);
         colorMode(HSB);
-        stroke(0, 0, 255);
+        stroke(255);
         textAlign(CENTER, CENTER);
-        for(int i = 1 ; i <= 30 ; i ++)
-        {
-            x = map(i, 0, 30, border, width - border);
-            line(x, border, x, height - border);
 
-            fill(255);
-            text(i, x, border / 2);
+        for(int i = 1 ; i <= days ; i ++)
+        {
+            x = map(i, 1, 30, leftSide, width - margin);
+            line(x, margin, x, height - margin);
+            text(i, x, margin * 0.5f);
         }
 
         for(int i=0; i<tasks.size();i++){
+			fill(255);
         	Task horiheader = tasks.get(i);
-			y = map(tasks.get(i).start, 0, 30, border, height - border);
+			y = map(tasks.get(i).start, 0, 25, border, height - border);
 			text(horiheader.getTask(), border / 2, y);
+
+			rect(60, 50, 20, 45);
+
 		}
     }
 
 	public void setup(){
 		loadTasks();
 		printTasks();
+	}
+
+	public void draw(){
 		displayTasks();
 	}
 }
